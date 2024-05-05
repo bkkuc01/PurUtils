@@ -26,6 +26,11 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return tab(sender, args).stream().filter(s -> s.startsWith(args[args.length - 1])).collect(Collectors.toList());
+        try {
+            tab(sender, args).stream().filter(s -> s.startsWith(args[args.length - 1])).collect(Collectors.toList());
+        } catch (NullPointerException e){
+            return null;
+        }
+        return null;
     }
 }
