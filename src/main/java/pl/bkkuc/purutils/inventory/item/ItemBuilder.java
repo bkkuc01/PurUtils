@@ -97,7 +97,7 @@ public class ItemBuilder {
 
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", value))
+        profile.getProperties().put("textures", new Property("textures", value));
 
         try {
             Field profileField = meta.getClass().getDeclaredField("profile");
