@@ -115,6 +115,11 @@ public class Utility {
                     new ParticleBuilder(particle).count(count).extra(extra).location(player.getLocation()).spawn();
                     break;
                 }
+                case "[actionbar]": {
+                    if(player == null) break;
+                    player.sendActionBar(ColorUtility.colorize(ATS(params, 1)));
+                    break;
+                }
             }
         }
     }
