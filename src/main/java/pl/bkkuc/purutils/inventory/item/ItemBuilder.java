@@ -15,6 +15,7 @@ import pl.bkkuc.purutils.ColorUtility;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
@@ -23,7 +24,7 @@ public class ItemBuilder {
         ItemMeta meta = item.getItemMeta();
 
         if(name != null) meta.setDisplayName(PlaceholderAPI.setPlaceholders(null, ColorUtility.colorize(name)));
-        if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(null, lore));
+        if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(null, lore.stream().map(ColorUtility::colorize).collect(Collectors.toList())));
 
         item.setItemMeta(meta);
         return item;
