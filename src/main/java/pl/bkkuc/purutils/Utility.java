@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -13,12 +14,23 @@ import java.util.List;
 
 public class Utility {
 
-    public static void doActions(@Nullable Player player, List<String> actions, boolean papi){
+    public static void doActions(@Nullable Player player, List<String> actions, List<Replacer> replacers){
         if(actions == null || actions.isEmpty()) return;
 
         for(String action: actions){
             if(player != null) action = action.replace("{player}", player.getName());
-            if(papi) action = PlaceholderAPI.setPlaceholders(player, action);
+            try {
+                action = PlaceholderAPI.setPlaceholders(player, action);
+            } catch (Exception ignored) {}
+
+            if(replacers != null && !replacers.isEmpty()) {
+                try {
+                    for (Replacer replacer : replacers) {
+                        action = action.replace(replacer.getOldValue(), replacer.getNewValue());
+                    }
+                } catch (Exception ignored) {}
+            }
+
             String[] params = action.split(" ");
             switch (params[0].toLowerCase()){
                 case "[message]": {
@@ -126,5 +138,24 @@ public class Utility {
 
     public static String ATS(String[] array, int index){
         return String.join(" ", Arrays.copyOfRange(array, index, array.length));
+    }
+
+    public static class Replacer {
+
+        private final String oldValue;
+        private final String newValue;
+
+        public Replacer(@NotNull String oldValue, @NotNull String newValue) {
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+        }
+
+        public String getOldValue() {
+            return oldValue;
+        }
+
+        public String getNewValue() {
+            return newValue;
+        }
     }
 }
