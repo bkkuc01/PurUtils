@@ -6,10 +6,12 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Nullable;
 import pl.bkkuc.purutils.ColorUtility;
 
 import java.lang.reflect.Field;
@@ -19,19 +21,21 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
-    public static ItemStack buildItem(String material, String name, List<String> lore){
+    public static ItemStack buildItem(@Nullable Player player, String material, String name, List<String> lore){
         ItemStack item = new ItemStack(getMaterial(material));
         ItemMeta meta = item.getItemMeta();
 
-        if(name != null) meta.setDisplayName(PlaceholderAPI.setPlaceholders(null, ColorUtility.colorize(name)));
-        if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(null, lore.stream().map(ColorUtility::colorize).collect(Collectors.toList())));
+        name = name != null ? name.replace("{player}", player != null ? player.getName() : name) : name;
+        lore = lore != null && !lore.isEmpty() ? lore.stream().map(s -> s.replace("{player}", player.getName())).collect(Collectors.toList()) : lore;
+        if(name != null) meta.setDisplayName(PlaceholderAPI.setPlaceholders(player, ColorUtility.colorize(name)));
+        if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(player, lore.stream().map(ColorUtility::colorize).collect(Collectors.toList())));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    public static ItemStack fromConfiguration(ConfigurationSection section){
-        ItemStack item = buildItem(section.getString("material", "STONE"), section.getString("name"), section.getStringList("lore"));
+    public static ItemStack fromConfiguration(ConfigurationSection section, @Nullable Player player){
+        ItemStack item = buildItem(player, section.getString("material", "STONE"), section.getString("name"), section.getStringList("lore"));
         ItemMeta meta = item.getItemMeta();
 
         if(section.get("hide-flags") != null && !section.getStringList("hide-flags").isEmpty()){
