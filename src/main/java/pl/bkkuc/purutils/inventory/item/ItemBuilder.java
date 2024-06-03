@@ -25,8 +25,9 @@ public class ItemBuilder {
         ItemStack item = new ItemStack(getMaterial(material));
         ItemMeta meta = item.getItemMeta();
 
-        name = name != null ? name.replace("{player}", player != null ? player.getName() : name) : name;
-        lore = lore != null && !lore.isEmpty() ? lore.stream().map(s -> s.replace("{player}", player.getName())).collect(Collectors.toList()) : lore;
+        name = name != null ? name.replace("{player}", player != null ? player.getName() : "{player}") : null;
+        lore = lore != null && !lore.isEmpty() ? lore.stream().map(s -> s.replace("{player}", player != null ? player.getName() : "{player}")).collect(Collectors.toList()) : lore;
+
         if(name != null) meta.setDisplayName(PlaceholderAPI.setPlaceholders(player, ColorUtility.colorize(name)));
         if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(player, lore.stream().map(ColorUtility::colorize).collect(Collectors.toList())));
 
