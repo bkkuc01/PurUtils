@@ -34,7 +34,7 @@ public class InventoryBuilder {
                 char symbol = k.charAt(0);
                 ConfigurationSection itemConfig = (ConfigurationSection) v;
                 if (itemConfig.get("material") != null) {
-                    ItemStack item = ItemBuilder.fromConfiguration(items.getConfigurationSection(String.valueOf(symbol)));
+                    ItemStack item = ItemBuilder.fromConfiguration(items.getConfigurationSection(String.valueOf(symbol)), null);
                     NBTItem nbt = new NBTItem(item);
                     String type = items.getString(symbol + ".type", null);
                     nbt.setString(String.valueOf(symbol), type);
