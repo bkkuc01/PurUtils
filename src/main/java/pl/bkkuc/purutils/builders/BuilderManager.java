@@ -13,6 +13,7 @@ import pl.bkkuc.purutils.builders.impl.EquipmentBuilder;
 import pl.bkkuc.purutils.builders.impl.ParticleBuilder;
 import pl.bkkuc.purutils.inventory.item.ItemBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,12 +41,31 @@ public class BuilderManager {
             ConfigurationSection itemSection = section.getConfigurationSection(key);
 
             switch (lowerKey) {
-                case "шляпа", "шлем", "голова", "head", "helmet" -> equipmentBuilder.helmet(itemStack(itemSection));
-                case "нагрудник", "jacket", "жилет", "сиськи", "грудь", "chestplate" -> equipmentBuilder.chestplate(itemStack(itemSection));
-                case "нога", "ноги", "legs", "leg", "legging", "ляжка", "ляжки", "leggings" -> equipmentBuilder.leggings(itemStack(itemSection));
-                case "носки", "ботинки", "лапки", "feets", "feet", "boot", "boots" -> equipmentBuilder.boots(itemStack(itemSection));
-                case "hand", "рука", "main-hand", "main_hand", "mainhand" -> equipmentBuilder.mainHand(itemStack(itemSection));
-                case "2рука", "off-hand", "off_hand", "offhand" -> equipmentBuilder.offHand(itemStack(itemSection));
+                case "носки":
+                case "ботинки":
+                case "лапки":
+                case "feets":
+                case "feet":
+                case "boot":
+                case "boots": {
+                    equipmentBuilder.boots(itemStack(itemSection));
+                    break;
+                }
+                case "hand":
+                case "рука":
+                case "main-hand":
+                case "main_hand":
+                case "mainhand": {
+                    equipmentBuilder.mainHand(itemStack(itemSection));
+                    break;
+                }
+                case "2рука":
+                case "off-hand":
+                case "off_hand":
+                case "offhand": {
+                    equipmentBuilder.offHand(itemStack(itemSection));
+                    break;
+                }
             }
         }
 
@@ -75,7 +95,7 @@ public class BuilderManager {
     }
 
     private static String findEntityTypeName(ConfigurationSection section) {
-        List<String> similarity = List.of("entitytype", "entity-type", "type", "mob", "mobtype", "mob-type", "typ", "entitytyp", "entity-typ", "моб", "тип");
+        List<String> similarity = Arrays.asList("entitytype", "entity-type", "type", "mob", "mobtype", "mob-type", "typ", "entitytyp", "entity-typ", "моб", "тип");
         return section.getKeys(false).stream()
                 .filter(key -> similarity.contains(key) && section.get(key) instanceof String)
                 .findFirst()

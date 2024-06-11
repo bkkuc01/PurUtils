@@ -83,7 +83,8 @@ public class EntityBuilder {
 
         ent.setGlowing(glowing);
 
-        if(ent instanceof LivingEntity livingEntity) {
+        if(ent instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) ent;
             double finalHealth = maxHealth != 0 ? Math.min(health, maxHealth) : health;
             if (finalHealth > 0) {
                 livingEntity.setMaxHealth(finalHealth);
