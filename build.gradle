@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'pl.bkkuc'
-version = '1.7'
+version = '1.7.1'
 
 repositories {
     mavenCentral()
@@ -35,6 +36,23 @@ java {
     targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = 'jitpack'
+            url = "https://jitpack.io"
+        }
     }
 }
 
