@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ItemBuilder {
 
     public static ItemStack buildItem(@Nullable Player player, String material, String name, List<String> lore){
-        ItemStack item = new ItemStack(getMaterial(material));
+        ItemStack item = new ItemStack(getMaterial(material, player != null ? player.getName() : null));
         ItemMeta meta = item.getItemMeta();
 
         name = name != null ? name.replace("{player}", player != null ? player.getName() : "{player}") : null;
@@ -33,6 +33,10 @@ public class ItemBuilder {
 
         item.setItemMeta(meta);
         return item;
+    }
+
+    public static ItemStack buildItem(@Nullable Player player, String material, String name){
+        return buildItem(player, material, name, null);
     }
 
     public static ItemStack fromConfiguration(ConfigurationSection section, @Nullable Player player){
@@ -63,9 +67,9 @@ public class ItemBuilder {
         return item;
     }
 
-    public static ItemStack getMaterial(String material) {
+    public static ItemStack getMaterial(String material, @Nullable String playerName) {
         if (material.startsWith("head-"))
-            return playerHead(material);
+            return playerHead(material, playerName);
         if (material.startsWith("basehead-"))
             return getBase64Head(material.split("-")[1]);
 
@@ -78,7 +82,7 @@ public class ItemBuilder {
         return new ItemStack(matchedMaterial, 1);
     }
 
-    public static ItemStack playerHead(String owner) {
+    public static ItemStack playerHead(String owner, @Nullable String playerName) {
         ItemStack item;
         if (Material.matchMaterial("PLAYER_HEAD") != null) {
             item = new ItemStack(Material.valueOf("PLAYER_HEAD"));
@@ -87,7 +91,7 @@ public class ItemBuilder {
             item.setDurability((short) 3);
         }
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwner(owner);
+        meta.setOwner(owner.split("-")[1].replace("{player}", playerName == null ? "{player}" : playerName));
         item.setItemMeta(meta);
         return item;
     }
