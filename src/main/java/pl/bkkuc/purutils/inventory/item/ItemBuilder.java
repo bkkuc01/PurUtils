@@ -2,6 +2,7 @@ package pl.bkkuc.purutils.inventory.item;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.tr7zw.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -64,6 +65,13 @@ public class ItemBuilder {
         }
 
         item.setItemMeta(meta);
+
+        if(section.getString("type") != null){
+            NBTItem nbtItem = new NBTItem(item);
+            nbtItem.setString("type", section.getString("type"));
+            nbtItem.applyNBT(item);
+        }
+
         return item;
     }
 

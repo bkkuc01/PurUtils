@@ -71,7 +71,7 @@ public class EntityBuilder {
     }
 
     public Entity spawn(){
-        if(entity == null || location == null) {
+        if(location == null) {
             throw new NullPointerException("Entity or Location or EntityType cannot be a null");
         }
         Entity ent = location.getWorld().spawnEntity(location, entityType == null ? EntityType.PIG : entityType);

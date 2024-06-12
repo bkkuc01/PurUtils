@@ -44,6 +44,12 @@ public class Utility {
                         String[] title = ColorUtility.colorize(ATS(params, 1)).split(";");
                         player.sendTitle(title[0], title.length >= 2 ? title[1] : "");
                     }
+                    else {
+                        for(Player players: Bukkit.getOnlinePlayers()) {
+                            String[] title = ColorUtility.colorize(ATS(params, 1)).split(";");
+                            players.sendTitle(title[0], title.length >= 2 ? title[1] : "");
+                        }
+                    }
 
                     break;
                 }
