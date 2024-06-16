@@ -36,12 +36,27 @@ public class ItemBuilder {
         return item;
     }
 
+    public static ItemStack buildItem(@Nullable Player player, String material, int amount, String name, List<String> lore){
+        ItemStack item = new ItemStack(getMaterial(material, player != null ? player.getName() : null));
+        item.setAmount(amount <= 0 ? 1 : amount);
+        ItemMeta meta = item.getItemMeta();
+
+        name = name != null ? name.replace("{player}", player != null ? player.getName() : "{player}") : null;
+        lore = lore != null && !lore.isEmpty() ? lore.stream().map(s -> s.replace("{player}", player != null ? player.getName() : "{player}")).collect(Collectors.toList()) : lore;
+
+        if(name != null) meta.setDisplayName(PlaceholderAPI.setPlaceholders(player, ColorUtility.colorize(name)));
+        if(lore != null && !lore.isEmpty()) meta.setLore(PlaceholderAPI.setPlaceholders(player, lore.stream().map(ColorUtility::colorize).collect(Collectors.toList())));
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
     public static ItemStack buildItem(@Nullable Player player, String material, String name){
         return buildItem(player, material, name, null);
     }
 
     public static ItemStack fromConfiguration(ConfigurationSection section, @Nullable Player player){
-        ItemStack item = buildItem(player, section.getString("material", "STONE"), section.getString("name"), section.getStringList("lore"));
+        ItemStack item = buildItem(player, section.getString("material", "STONE"), section.getInt("amount", 1), section.getString("name"), section.getStringList("lore"));
         ItemMeta meta = item.getItemMeta();
 
         if(section.get("hide-flags") != null && !section.getStringList("hide-flags").isEmpty()){
