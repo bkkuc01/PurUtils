@@ -18,12 +18,8 @@ public class InventoryPrevious implements Listener {
 
     private final List<User> previousInventories;
 
-    private final JavaPlugin javaPlugin;
-
     public InventoryPrevious(JavaPlugin javaPlugin){
-        this.javaPlugin = javaPlugin;
         Bukkit.getPluginManager().registerEvents(this, javaPlugin);
-
         this.previousInventories = new CopyOnWriteArrayList<>();
     }
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'pl.bkkuc'
-version = '1.7.5'
+version = '1.8'
 
 repositories {
     mavenCentral()
@@ -26,6 +26,10 @@ dependencies {
 
     implementation files('libs/NBTAPI.jar')
     compileOnly 'com.mojang:authlib:1.5.25'
+
+    implementation 'mysql:mysql-connector-java:8.0.29'
+    implementation 'org.xerial:sqlite-jdbc:3.39.3.0'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
 }
 
 def targetJavaVersion = 8

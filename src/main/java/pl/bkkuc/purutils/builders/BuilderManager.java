@@ -1,5 +1,6 @@
 package pl.bkkuc.purutils.builders;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -7,11 +8,15 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.bkkuc.purutils.builders.impl.EntityBuilder;
 import pl.bkkuc.purutils.builders.impl.EquipmentBuilder;
 import pl.bkkuc.purutils.builders.impl.ParticleBuilder;
+import pl.bkkuc.purutils.database.DataBase;
+import pl.bkkuc.purutils.database.DataBaseType;
+import pl.bkkuc.purutils.database.databases.*;
 import pl.bkkuc.purutils.inventory.item.ItemBuilder;
 
 import java.util.ArrayList;
@@ -74,7 +79,6 @@ public class BuilderManager {
     }
 
     public static @Nullable Entity entity(@NotNull ConfigurationSection section, @NotNull Location location) {
-        if (section == null) return null;
 
         String entityTypeName = findEntityTypeName(section);
         if (entityTypeName == null) return null;
@@ -106,7 +110,7 @@ public class BuilderManager {
      *       ...
      * @return Successfully
      */
-    public boolean inventoryBuilderBySlot(@NotNull Inventory inventory, @NotNull ConfigurationSection section, @Nullable Player player) {
+    public static boolean inventoryBuilderBySlot(@NotNull Inventory inventory, @NotNull ConfigurationSection section, @Nullable Player player) {
 
         for(String maybeSlot: section.getKeys(false)) {
             int slot;
@@ -141,7 +145,7 @@ public class BuilderManager {
      *       ...
      * @return Successfully
      */
-    public boolean inventoryBuilder(@NotNull Inventory inventory, @NotNull ConfigurationSection section, @Nullable Player player) {
+    public static boolean inventoryBuilder(@NotNull Inventory inventory, @NotNull ConfigurationSection section, @Nullable Player player) {
 
         for(String iconName: section.getKeys(false)) {
             ConfigurationSection iconSection = section.getConfigurationSection(iconName);
@@ -182,4 +186,53 @@ public class BuilderManager {
                 .map(section::getString)
                 .orElse(null);
     }
+
+    public static @Nullable DataBase dataBaseBuilder(@Nullable ConfigurationSection section, @NotNull JavaPlugin javaPlugin) {
+
+        String dataBaseTypeName = section != null ? section.getString("type", "SQLITE") : "SQLITE";
+        DataBaseType dataBaseType;
+        try {
+            dataBaseType = DataBaseType.valueOf(dataBaseTypeName.toUpperCase());
+        } catch (IllegalArgumentException e){
+            Bukkit.getLogger().severe("DataBase type '" + dataBaseTypeName + "' is not found. I will use SqLite");
+            dataBaseType = DataBaseType.SQLITE;
+        }
+
+        String host         = "localhost";
+        String port         = "3306";
+        String username     = "root";
+        String password     = "admin";
+        String dataBaseName = javaPlugin.getDescription().getName().toLowerCase() + "_";
+
+        if(section != null) {
+            host         = section.getString("host", "localhost");
+            port         = section.getString("port", "3306");
+            username     = section.getString("username", "root");
+            password     = section.getString("password", "admin");
+            dataBaseName = section.getString("data-base-name", javaPlugin.getDescription().getName().toLowerCase() + "_");
+        }
+
+        DataBase dataBase = null;
+        switch (dataBaseType) {
+            case MYSQL: {
+                dataBase = new MySQL(host, port, username, password, dataBaseName);
+                break;
+            }
+            case SQLITE: {
+                dataBase = new SqLite(javaPlugin, null);
+                break;
+            }
+            case POSTGRESQL: {
+                dataBase = new PostgreSQL(host, port, username, password, dataBaseName);
+                break;
+            }
+            case MARIADB: {
+                dataBase = new MariaDB(host, port, username, password, dataBaseName);
+                break;
+            }
+        }
+
+        return dataBase;
+    }
+
 }
