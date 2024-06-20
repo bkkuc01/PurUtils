@@ -2,6 +2,7 @@ package pl.bkkuc.purutils;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.bkkuc.purutils.other.Updater;
 
 public class UtilPlugin extends JavaPlugin {
 

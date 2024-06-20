@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import pl.bkkuc.purutils.ColorUtility;
+import pl.bkkuc.purutils.other.ColorUtility;
 import pl.bkkuc.purutils.inventory.item.ItemBuilder;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package pl.bkkuc.purutils;
+package pl.bkkuc.purutils.other;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.bukkit.Bukkit;
+import pl.bkkuc.purutils.UtilPlugin;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

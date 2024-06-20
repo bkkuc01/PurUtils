@@ -6,7 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
-import pl.bkkuc.purutils.ColorUtility;
+import pl.bkkuc.purutils.other.ColorUtility;
 
 public class EntityBuilder {
 

@@ -1,4 +1,4 @@
-package pl.bkkuc.purutils;
+package pl.bkkuc.purutils.other;
 
 import org.bukkit.ChatColor;
 
