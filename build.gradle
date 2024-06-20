@@ -36,6 +36,10 @@ dependencies {
     implementation 'org.apache.maven:maven-artifact:3.6.3'
 }
 
+shadowJar {
+    minimize()
+}
+
 assemble.dependsOn(shadowJar)
 
 def targetJavaVersion = 11
