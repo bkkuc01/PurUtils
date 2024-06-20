@@ -1,0 +1,5 @@
+name: PurUtils
+version: '${version}'
+main: pl.bkkuc.purutils.UtilPlugin
+
+author: t.me/bkkuc

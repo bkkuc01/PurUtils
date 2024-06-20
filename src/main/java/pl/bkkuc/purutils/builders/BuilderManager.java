@@ -5,12 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.bkkuc.purutils.builders.impl.EffectBuilder;
 import pl.bkkuc.purutils.builders.impl.EntityBuilder;
 import pl.bkkuc.purutils.builders.impl.EquipmentBuilder;
 import pl.bkkuc.purutils.builders.impl.ParticleBuilder;
@@ -36,6 +38,10 @@ public class BuilderManager {
 
     public static @Nullable ItemStack itemStack(ConfigurationSection section) {
         return itemStack(section, null);
+    }
+
+    public static EffectBuilder effectBuilder(@NotNull LivingEntity livingEntity) {
+        return new EffectBuilder(livingEntity);
     }
 
     public static @Nullable EquipmentBuilder equipmentBuilder(ConfigurationSection section) {

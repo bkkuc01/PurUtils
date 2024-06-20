@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface IFile {
 
+    void init();
+
     String getName();
 
     /**
@@ -13,6 +15,7 @@ public interface IFile {
     @Nullable String getFolder();
 
     FileConfiguration getConfig();
+    FileData getData();
 
     FileConfiguration save();
 }

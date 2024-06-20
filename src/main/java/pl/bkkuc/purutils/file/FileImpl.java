@@ -15,6 +15,7 @@ public class FileImpl implements IFile {
 
     private final JavaPlugin javaPlugin;
     private FileConfiguration config;
+    private FileData data;
 
     private final String path;
 
@@ -27,6 +28,12 @@ public class FileImpl implements IFile {
 
     public FileImpl(String name, JavaPlugin javaPlugin) {
         this(name, null, javaPlugin);
+    }
+
+    @Override
+    public void init() {
+        getConfig();
+        this.data = new FileDataImpl(getConfig());
     }
 
     @Override
@@ -49,11 +56,19 @@ public class FileImpl implements IFile {
     }
 
     @Override
+    public FileData getData() {
+        return data;
+    }
+
+    @Override
     public FileConfiguration save() {
         try {
             config.save(new File(path, name));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if(data != null) {
+            this.data = new FileDataImpl(getConfig());
         }
         return config;
     }
